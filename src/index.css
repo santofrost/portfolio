@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+:root {
+  /* Fallout Terminal Colors */
+  --term-bg: #0c0c0c;
+  --term-glow: rgba(74, 255, 104, 0.4);
+  --term-green: #39ff14;
+  /* fosforescente */
+  --term-green-muted: #1e8712;
+  --term-green-dark: #0a4005;
+  --term-text-shadow: 0 0 5px var(--term-glow);
+  --term-border: #39ff14;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Share Tech Mono', monospace;
+  background-color: var(--term-bg);
+  color: var(--term-green);
+  line-height: 1.6;
+  overflow-x: hidden;
+  /* El text shadow global para dar el glow del fósforo verde */
+  text-shadow: var(--term-text-shadow);
+  /* Un ligero brillo de borde oscuro en el body */
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.9);
+  height: 100vh;
+}
+
+::selection {
+  background: var(--term-green);
+  color: var(--term-bg);
+  text-shadow: none;
+}
+
+/* Efectos CRT Base */
+.crt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Scanlines */
+.crt-overlay::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px;
+  /* Tamaño del scanline */
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Flicker ligero (parpadeo del monitor viejo) */
+@keyframes crtFlicker {
+  0% {
+    opacity: 0.95;
+  }
+
+  5% {
+    opacity: 0.85;
+  }
+
+  10% {
+    opacity: 0.95;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.95;
+  }
+
+  60% {
+    opacity: 0.90;
+  }
+
+  70% {
+    opacity: 0.95;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.95;
+  }
+}
+
+.crt-overlay::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(18, 16, 16, 0.1);
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  animation: crtFlicker 0.15s infinite;
+}
+
+/* Curvatura de pantalla CRT y viñeta en las esquinas */
+.crt-screen {
+  width: 100%;
+  min-height: 100vh;
+  padding: 2rem;
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.9);
+}
+
+/* Utilidades Comunes */
+.terminal-border {
+  border: 1px solid var(--term-green-muted);
+  box-shadow: inset 0 0 10px rgba(57, 255, 20, 0.1), 0 0 10px rgba(57, 255, 20, 0.2);
+}
+
+a {
+  color: var(--term-green);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--term-green-muted);
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  background-color: var(--term-green-dark);
+  text-shadow: 0 0 8px var(--term-green);
+}
